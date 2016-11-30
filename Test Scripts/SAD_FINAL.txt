@@ -42,7 +42,7 @@ gtzero:
 			beq		$t4, $t9, NextRow		# 152 Check End of Row
 			addi 	$t4, $t4, 4				# 156 Goto Next Window Element	
 			addi	$t3, $t3, 4				# 160 Goto Next Frame Element	
-			j 		WindowLoop				# 164
+			j 		WindowLoop				# 164 (fixed)
 NextRow:	
 			add		$t9, $t9, $s5		# 168 Move to Next Row End
 			addi 	$t4, $t4, 4			# 172 Goto Next Window Element	

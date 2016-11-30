@@ -7,6 +7,9 @@ vbsme:
 			lw		$s1,  4($a0)		# Frame Cols
 			lw		$s2,  8($a0)		# Window Rows
 			lw		$s3, 12($a0)		# Window Cols
+			addi    $a1, $0, 16			# Initial frame element address WRT DM
+			mul     $t0, $s1, $s2
+			add     $a2, $a1, $t0		# Initial Window element WRT DM
 			sll		$s5, $s3, 2			# Window Row Size
 			mul		$s4, $s5, $s2		# End of Window Offset
 			addi	$s4, $s4, -4

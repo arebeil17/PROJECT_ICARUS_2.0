@@ -55,7 +55,9 @@ module InstructionMemory(Address, Instruction);
         // Instruction_memory.txt is for Private Case Testing
         //$readmemh("Instruction_memory.txt", memory);
         //Dependent LW and BRANCH testing PLUS JAL TORTURE TEST
-        $readmemh("test9IM.hex", memory);
+        //$readmemh("test9IM.hex", memory);
+        //Phase 2 Testing
+        $readmemb("SAD_Final.bin", memory);
     end
 
     assign Instruction = memory[Address[31:2]];

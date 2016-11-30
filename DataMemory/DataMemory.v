@@ -46,13 +46,13 @@ module DataMemory(Address, WriteData, ByteSel, Clock, MemWrite, MemRead, ReadDat
     
     output reg [31:0] ReadData; // Contents of memory location at Address
 
-    reg [31:0] memory [0:255]; // 256x32 Registers
+    reg [31:0] memory [0:5120]; // 256x32 Registers
     integer i = 0;
     
     //initialize data memory
     initial begin
         // Labs9-13DM.hex initializes all memory to 0x00000000
-        $readmemh("Labs9-13DM.hex", memory);
+        //$readmemh("Labs9-13DM.hex", memory);
         // Labs14-15DM.hex Initializes Memory to 1,2,3,4,-1 and Remaining to 0
         //$readmemh("Labs14-15DM.hex", memory);
         // Labs16-23DM.hex Initializes Memory to 100,200,...,1200 and Remaining to 0

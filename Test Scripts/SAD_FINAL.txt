@@ -18,41 +18,41 @@ vbsme:
 			sll     $t7, $s1, 2	        # 64 Frame width offset
 			sll     $t1, $s3, 2         # 68 Window Cols offset
 			sub     $t7, $t7, $t1       # 72 Frame width - Window width
-			addi    $t7, $t7, 4         # 78 Frame Jump fix 
-			addi 	$t6, $a1, 0			# 82 Current Frame Element/ Initial Frame Address
-			add		$t9, $a2, $s5		# 86 Frame-Window Row End
-			addi	$t9, $t9, -4		# 90
-			add     $s6,  $0, $0        # 94 Saves Last move of window(INIT: 0, RIGHT: 1, UPR: 2, DWL: 3, DOWN: 4)
+			addi    $t7, $t7, 4         # 76 Frame Jump fix 
+			addi 	$t6, $a1, 0			# 80 Current Frame Element/ Initial Frame Address
+			add		$t9, $a2, $s5		# 84 Frame-Window Row End
+			addi	$t9, $t9, -4		# 88
+			add     $s6,  $0, $0        # 92 Saves Last move of window(INIT: 0, RIGHT: 1, UPR: 2, DWL: 3, DOWN: 4)
 SAD_Routine:
-			add		$t9, $a2, $s5		# 98 Frame-Window Row End
-			addi	$t9, $t9, -4		# 102
-			addi	$t5,  $0, 0			# 106 Reset SAD Window Total
-			add	    $t3, $t6, $0        # 110 Saves current initial Frame address before window scan
-			add     $t4, $a2, $0        # 114 Reset current Window address
+			add		$t9, $a2, $s5		# 96 Frame-Window Row End
+			addi	$t9, $t9, -4		# 100
+			addi	$t5,  $0, 0			# 104 Reset SAD Window Total
+			add	    $t3, $t6, $0        # 108 Saves current initial Frame address before window scan
+			add     $t4, $a2, $0        # 112 Reset current Window address
 WindowLoop:	
-			lw		$t1, 0($t3)			# 118 Frame Value
-			lw		$t2, 0($t4)			# 122 Window Value
-			sub 	$t1, $t1,$t2		# 126 Subtract Window Value from Frame Value
-			slt 	$t2, $t1,$0			# 130 if(t1 < 0) Perform Absolute Value Calculation
-			beq 	$t2, $0,gtzero		# 116
-			nor 	$t1, $t1,$0			# 120
-			addi	$t1, $t1,1			# 124
+			lw		$t1, 0($t3)			# 116 Frame Value
+			lw		$t2, 0($t4)			# 120 Window Value
+			sub 	$t1, $t1,$t2		# 124 Subtract Window Value from Frame Value
+			slt 	$t2, $t1,$0			# 128 if(t1 < 0) Perform Absolute Value Calculation
+			beq 	$t2, $0,gtzero		# 132
+			nor 	$t1, $t1,$0			# 136
+			addi	$t1, $t1,1			# 140
 gtzero:		
-			add 	$t5, $t5, $t1			# 128 Window SAD Total
-			beq		$t4, $s4, returnUpdate	# 132 GoTo checkSAD if at the end of the window			
-			beq		$t4, $t9, NextRow		# 136 Check End of Row
-			addi 	$t4, $t4, 4				# 140 Goto Next Window Element	
-			addi	$t3, $t3, 4				# 144 Goto Next Frame Element	
-			j 		WindowLoop				# 148
-NextRow:	
-			add		$t9, $t9, $s5			# 152 Move to Next Row End
+			add 	$t5, $t5, $t1		# 144 Window SAD Total
+			beq		$t4, $s4, returnUpdate	# 148 GoTo checkSAD if at the end of the window			
+			beq		$t4, $t9, NextRow		# 152 Check End of Row
 			addi 	$t4, $t4, 4				# 156 Goto Next Window Element	
-			add		$t3, $t3, $t7			# 160 Frame Jump
-			j		WindowLoop				# 164
+			addi	$t3, $t3, 4				# 160 Goto Next Frame Element	
+			j 		WindowLoop				# 164
+NextRow:	
+			add		$t9, $t9, $s5			# 168 Move to Next Row End
+			addi 	$t4, $t4, 4				# 172 Goto Next Window Element	
+			add		$t3, $t3, $t7			# 176 Frame Jump
+			j		WindowLoop				# 180
 returnUpdate:	
-			addi    $t0, $0, 0				# 168
-			sub     $t1, $t6, $a1        	# 172 Compute Frame offset from starting address
-			srl     $t1, $t1, 2         	# 176 convert address offset to integer index
+			addi    $t0, $0, 0				# 184
+			sub     $t1, $t6, $a1        	# 188 Compute Frame offset from starting address
+			srl     $t1, $t1, 2         	# 192 convert address offset to integer index
 IndexLoop:									# Determines the index of the current row
 			slt     $t8, $t1, $s1			# if(t0 < 0) t2 = 1 else if(t0 >= 0) t2 = 0
 			bne		$t8, $0, CheckSAD 		# conitnue loop until t0 <= 0, t2 = 0

@@ -1,5 +1,4 @@
-vbsme:		
-			li		$v0,0				# 0 Reset v0
+vbsme:		li		$v0,0				# 0 Reset v0
 			li		$v1,0				# 4 Reset v1
 			lui 	$s7,0x7fff			# 8 SAD Comparison Value
 			ori 	$s7,$s7,0xffff		# 12
@@ -45,26 +44,26 @@ gtzero:
 			addi	$t3, $t3, 4				# 160 Goto Next Frame Element	
 			j 		WindowLoop				# 164
 NextRow:	
-			add		$t9, $t9, $s5			# 168 Move to Next Row End
-			addi 	$t4, $t4, 4				# 172 Goto Next Window Element	
-			add		$t3, $t3, $t7			# 176 Frame Jump
-			j		WindowLoop				# 180
+			add		$t9, $t9, $s5		# 168 Move to Next Row End
+			addi 	$t4, $t4, 4			# 172 Goto Next Window Element	
+			add		$t3, $t3, $t7		# 176 Frame Jump
+			j		WindowLoop			# 180
 returnUpdate:	
-			addi    $t0, $0, 0				# 184
-			sub     $t1, $t6, $a1        	# 188 Compute Frame offset from starting address
-			srl     $t1, $t1, 2         	# 192 convert address offset to integer index
-IndexLoop:									# Determines the index of the current row
-			slt     $t8, $t1, $s1			# if(t0 < 0) t2 = 1 else if(t0 >= 0) t2 = 0
-			bne		$t8, $0, CheckSAD 		# conitnue loop until t0 <= 0, t2 = 0
-			sub     $t1, $t1, $s1       	# division by subraction
-			addi	$t0, $t0, 1
-			j 		IndexLoop
+			addi    $t0, $0, 0			# 184
+			sub     $t1, $t6, $a1       # 188 Compute Frame offset from starting address
+			srl     $t1, $t1, 2         # 192 convert address offset to integer index
+IndexLoop:								# Determines the index of the current row
+			slt     $t8, $t1, $s1		# 196 if(t0 < 0) t2 = 1 else if(t0 >= 0) t2 = 0
+			bne		$t8, $0, CheckSAD 	# 200 conitnue loop until t0 <= 0, t2 = 0
+			sub     $t1, $t1, $s1       # 204 division by subraction
+			addi	$t0, $t0, 1			# 208
+			j 		IndexLoop			# 212
 CheckSAD:
-			slt 	$t8, $s7,$t5		# Check if current SAD is less than existing
-			bne 	$t8, $0, CheckExit 
-        	addi    $s7, $t5, 0         # update SAD with new comparison value
-			addi	$v0, $t0, 0
-			addi	$v1, $t1, 0
+			slt 	$t8, $s7,$t5		# 216 Check if current SAD is less than existing
+			bne 	$t8, $0, CheckExit 	# 220
+        	addi    $s7, $t5, 0         # 224 update SAD with new comparison value
+			addi	$v0, $t0, 0			# 228
+			addi	$v1, $t1, 0			# 232
 CheckExit:	
 			sub		$t2, $s1,$s3			# Calc Greatest Possible Column
 			sub		$t3, $s0,$s2			# Calc Greatest Possible Row

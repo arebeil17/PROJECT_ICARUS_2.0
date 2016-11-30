@@ -7,10 +7,11 @@ vbsme:
 			lw		$s1,  4($a0)		# 20 Frame Cols
 			lw		$s2,  8($a0)		# 24 Window Rows
 			lw		$s3, 12($a0)		# 28 Window Cols
-			addi	$a1, $0, 16
-			mul		$a2, $s0, $s1
-			addi	$s2, $a2, 16
-			sll		$s5, $s3, 2			# 32 Window Row Size
+			addi	$a1, $0, 16			# 32
+			mul		$a2, $s0, $s1		# 36
+			sll		$s2, $a2, 2			# 40
+			addi	$s2, $a2, 16		# 44
+			sll		$s5, $s3, 2			# 48 Window Row Size
 			mul		$s4, $s5, $s2		# 36 End of Window Offset
 			addi	$s4, $s4, -4		# 40
 			add     $s4, $s4, $a2       # 44 End of Window Address

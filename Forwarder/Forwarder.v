@@ -66,7 +66,7 @@ module Forwarder(
             // Forwaring WB -> EX
             if(EX_RegRS == RegDestFromMEMWB && EX_RegRS != 5'b00000) EXFWMuxAControl <= 2'b10;
             if(EX_RegRT == RegDestFromMEMWB) EXFWMuxBControl <= 2'b10;
-            // Forwarding WB -> ID (for Branching)
+            // Forwarding WB -> ID (for Jumps and Branching)
             if(ID_RegRS == RegDestFromMEMWB && ID_RegRS != 5'b00000) IDFWMuxAControl <= 2'b10;
             if(ID_RegRT == RegDestFromMEMWB) IDFWMuxBControl <= 2'b10;
         end
@@ -74,7 +74,7 @@ module Forwarder(
             // Forwarding MEM -> EX
             if(EX_RegRS == RegDestFromEXMEM && EX_RegRS != 5'b00000) EXFWMuxAControl <= 2'b01;
             if(EX_RegRT == RegDestFromEXMEM && EX_RegRT != 5'b00000) EXFWMuxBControl <= 2'b01;
-            // Forwarding MEM -> ID (for Branching)
+            // Forwarding MEM -> ID (for Jumps and Branching)
             if(ID_RegRS == RegDestFromEXMEM && ID_RegRS != 5'b00000) IDFWMuxAControl <= 2'b01;
             if(ID_RegRT == RegDestFromEXMEM && ID_RegRT != 5'b00000) IDFWMuxBControl <= 2'b01;
         end

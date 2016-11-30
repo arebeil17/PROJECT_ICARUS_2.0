@@ -65,27 +65,27 @@ CheckSAD:
 			addi	$v0, $t0, 0			# 228
 			addi	$v1, $t1, 0			# 232
 CheckExit:	
-			sub		$t2, $s1,$s3			# Calc Greatest Possible Column
-			sub		$t3, $s0,$s2			# Calc Greatest Possible Row
-			bne		$t0, $t3, NextWindow
-			bne     $t1, $t2, NextWindow
-			j 		End
+			sub		$t2, $s1,$s3		# 236 Calc Greatest Possible Column
+			sub		$t3, $s0,$s2		# 240 Calc Greatest Possible Row
+			bne		$t0, $t3, NextWindow# 244
+			bne     $t1, $t2, NextWindow# 248
+			j 		End					# 252
 NextWindow:
-			bne		$s6, $0,lastDown		# If Last Move was not init (0000), try Down
-			beq		$s6, $0,MoveRight	# End If No Move Right Possible - FIX FOR POSSIBLE MOVE DOWN
-			j		End					# else End
-lastDown:	andi	$t8, $s6,1			# Test Value for Last Move Down (0001)
-			beq		$t8, $0,lastRight	# If Last Move Was Not Down, Try lastRight
-			beq		$t1, $0,MoveUR		# If In first Column, next move is Up & Right...
-			beq		$t1, $t2,MoveDL		# else...If In Last Possible Column, next Move is Down & Left
-			j		MoveDown
-lastRight:	andi	$t8, $s6,2			# Test Value for last Move Right (0010)
-			beq		$t8, $0,lastUR		# If Last Move Was Not Right, Try Up & Right
-			beq		$t0, $0,MoveDL		# If We are in the top row Move Down & Left
-			beq		$t0, $t3,MoveUR		# If We are in the Lowest Row Possible Move Up & Right
-			j		MoveRight			
-lastUR:		andi	$t8, $s6,4			# Test Value for Last Move Up & Right (0100)
-			beq		$t8, $0,lastDL		# If Last Move was Not Up & Right, Try Down & Left
+			bne		$s6, $0,lastDown	# 256 If Last Move was not init (0000), try Down
+			beq		$s6, $0,MoveRight	# 260 End If No Move Right Possible - FIX FOR POSSIBLE MOVE DOWN
+			j		End					# 264 else End
+lastDown:	andi	$t8, $s6,1			# 268 Test Value for Last Move Down (0001)
+			beq		$t8, $0,lastRight	# 272 If Last Move Was Not Down, Try lastRight
+			beq		$t1, $0,MoveUR		# 276 If In first Column, next move is Up & Right...
+			beq		$t1, $t2,MoveDL		# 280 else...If In Last Possible Column, next Move is Down & Left
+			j		MoveDown			# 284
+lastRight:	andi	$t8, $s6,2			# 288 Test Value for last Move Right (0010)
+			beq		$t8, $0,lastUR		# 292 If Last Move Was Not Right, Try Up & Right
+			beq		$t0, $0,MoveDL		# 296 If We are in the top row Move Down & Left
+			beq		$t0, $t3,MoveUR		# 300 If We are in the Lowest Row Possible Move Up & Right
+			j		MoveRight			# 304
+lastUR:		andi	$t8, $s6,4			# 308 Test Value for Last Move Up & Right (0100)
+			beq		$t8, $0,lastDL		# 312 If Last Move was Not Up & Right, Try Down & Left
 			beq		$t1, $t2,MoveDown	# If We are In the Last column, Move Down
 			beq		$t0, $0,MoveRight	# If We are In the top Row, Move Right
 			j		MoveUR				# Otherwise Move Up & Right

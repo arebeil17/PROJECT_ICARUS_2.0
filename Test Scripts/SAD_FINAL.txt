@@ -9,31 +9,31 @@ vbsme:
 			lw		$s3, 12($a0)		# 28 Window Cols
 			addi	$a1, $0, 16			# 32
 			mul		$a2, $s0, $s1		# 36
-			sll		$s2, $a2, 2			# 40
-			add		$s2, $a2, $a1		# 44
+			sll		$a2, $a2, 2			# 40
+			add		$a2, $a2, $a1		# 44
 			sll		$s5, $s3, 2			# 48 Window Row Size
-			mul		$s4, $s5, $s2		# 36 End of Window Offset
-			addi	$s4, $s4, -4		# 40
-			add     $s4, $s4, $a2       # 44 End of Window Address
-			sll     $t7, $s1, 2	        # 48 Frame width offset
-			sll     $t1, $s3, 2         # 52 Window Cols offset
-			sub     $t7, $t7, $t1       # 56 Frame width - Window width
-			addi    $t7, $t7, 4         # 60 Frame Jump fix 
-			addi 	$t6, $a1, 0			# 64 Current Frame Element/ Initial Frame Address
-			add		$t9, $a2, $s5		# 68 Frame-Window Row End
-			addi	$t9, $t9, -4		# 72
-			add     $s6,  $0, $0        # 76 Saves Last move of window(INIT: 0, RIGHT: 1, UPR: 2, DWL: 3, DOWN: 4)
+			mul		$s4, $s5, $s2		# 52 End of Window Offset
+			addi	$s4, $s4, -4		# 56
+			add     $s4, $s4, $a2       # 60 End of Window Address
+			sll     $t7, $s1, 2	        # 64 Frame width offset
+			sll     $t1, $s3, 2         # 68 Window Cols offset
+			sub     $t7, $t7, $t1       # 72 Frame width - Window width
+			addi    $t7, $t7, 4         # 78 Frame Jump fix 
+			addi 	$t6, $a1, 0			# 82 Current Frame Element/ Initial Frame Address
+			add		$t9, $a2, $s5		# 86 Frame-Window Row End
+			addi	$t9, $t9, -4		# 90
+			add     $s6,  $0, $0        # 94 Saves Last move of window(INIT: 0, RIGHT: 1, UPR: 2, DWL: 3, DOWN: 4)
 SAD_Routine:
-			add		$t9, $a2, $s5		# 80 Frame-Window Row End
-			addi	$t9, $t9, -4		# 84
-			addi	$t5,  $0, 0			# 88 Reset SAD Window Total
-			add	    $t3, $t6, $0        # 92 Saves current initial Frame address before window scan
-			add     $t4, $a2, $0        # 96 Reset current Window address
+			add		$t9, $a2, $s5		# 98 Frame-Window Row End
+			addi	$t9, $t9, -4		# 102
+			addi	$t5,  $0, 0			# 106 Reset SAD Window Total
+			add	    $t3, $t6, $0        # 110 Saves current initial Frame address before window scan
+			add     $t4, $a2, $0        # 114 Reset current Window address
 WindowLoop:	
-			lw		$t1, 0($t3)			# 100 Frame Value
-			lw		$t2, 0($t4)			# 104 Window Value
-			sub 	$t1, $t1,$t2		# 108 Subtract Window Value from Frame Value
-			slt 	$t2, $t1,$0			# 112 if(t1 < 0) Perform Absolute Value Calculation
+			lw		$t1, 0($t3)			# 118 Frame Value
+			lw		$t2, 0($t4)			# 122 Window Value
+			sub 	$t1, $t1,$t2		# 126 Subtract Window Value from Frame Value
+			slt 	$t2, $t1,$0			# 130 if(t1 < 0) Perform Absolute Value Calculation
 			beq 	$t2, $0,gtzero		# 116
 			nor 	$t1, $t1,$0			# 120
 			addi	$t1, $t1,1			# 124

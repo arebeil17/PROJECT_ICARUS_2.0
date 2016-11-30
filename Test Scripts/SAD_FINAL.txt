@@ -10,7 +10,7 @@ vbsme:
 			addi	$a1, $0, 16			# 32
 			mul		$a2, $s0, $s1		# 36
 			sll		$s2, $a2, 2			# 40
-			addi	$s2, $a2, 16		# 44
+			add		$s2, $a2, $a1		# 44
 			sll		$s5, $s3, 2			# 48 Window Row Size
 			mul		$s4, $s5, $s2		# 36 End of Window Offset
 			addi	$s4, $s4, -4		# 40

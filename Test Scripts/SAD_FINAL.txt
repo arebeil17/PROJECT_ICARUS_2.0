@@ -22,32 +22,28 @@ vbsme:		li		$v0,0				# 0 Reset v0
 			add		$t9, $a2, $s5		# 84 Frame-Window Row End
 			addi	$t9, $t9, -4		# 88
 			add     $s6,  $0, $0        # 92 Saves Last move of window(INIT: 0, RIGHT: 1, UPR: 2, DWL: 3, DOWN: 4)
-SAD_Routine:
-			add		$t9, $a2, $s5		# 96 Frame-Window Row End
+SAD_Routine:add		$t9, $a2, $s5		# 96 Frame-Window Row End
 			addi	$t9, $t9, -4		# 100
 			addi	$t5,  $0, 0			# 104 Reset SAD Window Total
 			add	    $t3, $t6, $0        # 108 Saves current initial Frame address before window scan
 			add     $t4, $a2, $0        # 112 Reset current Window address
-WindowLoop:	
-			lw		$t1, 0($t3)			# 116 Frame Value
+WindowLoop:	lw		$t1, 0($t3)			# 116 Frame Value
 			lw		$t2, 0($t4)			# 120 Window Value
 			sub 	$t1, $t1,$t2		# 124 Subtract Window Value from Frame Value
 			slt 	$t2, $t1,$0			# 128 if(t1 < 0) Perform Absolute Value Calculation
 			beq 	$t2, $0,gtzero		# 132
 			nor 	$t1, $t1,$0			# 136
 			addi	$t1, $t1,1			# 140
-gtzero:		
-			add 	$t5, $t5, $t1		# 144 Window SAD Total
+gtzero:		add 	$t5, $t5, $t1		# 144 Window SAD Total
 			beq		$t4, $s4, returnUpdate	# 148 GoTo checkSAD if at the end of the window			
 			beq		$t4, $t9, NextRow		# 152 Check End of Row
 			addi 	$t4, $t4, 4				# 156 Goto Next Window Element	
 			addi	$t3, $t3, 4				# 160 Goto Next Frame Element	
 			j 		WindowLoop				# 164 (fixed)
-NextRow:	
-			add		$t9, $t9, $s5		# 168 Move to Next Row End
+NextRow:	add		$t9, $t9, $s5		# 168 Move to Next Row End
 			addi 	$t4, $t4, 4			# 172 Goto Next Window Element	
 			add		$t3, $t3, $t7		# 176 Frame Jump
-			j		WindowLoop			# 180
+			j		WindowLoop			# 180 (fixed)
 returnUpdate:	
 			addi    $t0, $0, 0			# 184
 			sub     $t1, $t6, $a1       # 188 Compute Frame offset from starting address
@@ -57,7 +53,7 @@ IndexLoop:								# Determines the index of the current row
 			bne		$t8, $0, CheckSAD 	# 200 conitnue loop until t0 <= 0, t2 = 0
 			sub     $t1, $t1, $s1       # 204 division by subraction
 			addi	$t0, $t0, 1			# 208
-			j 		IndexLoop			# 212
+			j 		IndexLoop			# 212 (fixed)
 CheckSAD:
 			slt 	$t8, $s7,$t5		# 216 Check if current SAD is less than existing
 			bne 	$t8, $0, CheckExit 	# 220

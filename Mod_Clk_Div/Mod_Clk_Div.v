@@ -33,6 +33,8 @@ module Mod_Clk_Div(In, Clk, Rst, ClkOut);
               DivVal_12 = 2000000,   //Constant for 25 Hz
               DivVal_13 = 1000000,   //Constant for 50 Hz
               DivVal_14 = 500000,   //Constant for 100 Hz
+              DivVal_15 = 50000,   // 1 kHz
+              DivVal_16 = 5000,    // 10kHz
               DivVal_Test1 = 2,     //Constant for  25 MHz  
               DivVal_Test2 = 1;     //For test benching 50 MHz
               
@@ -70,7 +72,7 @@ module Mod_Clk_Div(In, Clk, Rst, ClkOut);
             //TempSel <= DivVal_Test1;
        end
        else if(4'b0010==In) begin
-            TempSel <= DivVal_1;
+            TempSel <= DivVal_14;
             //TempSel <= DivVal_Test2;
        end
        else if(4'b0011==In) begin
@@ -111,13 +113,13 @@ module Mod_Clk_Div(In, Clk, Rst, ClkOut);
        else if(4'b1100==In) begin //16 Hz
             TempSel <= DivVal_11;  
        end                                             
-       else if(4'b1101==In) begin //25 Hz
-            TempSel <= DivVal_12;  
+       else if(4'b1101==In) begin //1 Hz
+            TempSel <= DivVal_15;  
        end                       
-       else if(4'b1110==In) begin //50 Hz
-            TempSel <= DivVal_13;  
+       else if(4'b1110==In) begin //10 kHz
+            TempSel <= DivVal_16;  
        end                                                                                                                   
-       else if(4'b1111==In) begin
+       else if(4'b1111==In) begin //50 mHz
             TempSel <= DivVal_Test2;
        end
     end

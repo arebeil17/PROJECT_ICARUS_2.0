@@ -57,7 +57,8 @@ module InstructionMemory(Address, Instruction);
         //Dependent LW and BRANCH testing PLUS JAL TORTURE TEST
         //$readmemh("test9IM.hex", memory);
         //Phase 2 Testing
-        $readmemb("SAD_Final.bin", memory);
+        //$readmemb("SAD_Final.bin", memory);
+        $readmemb("SAD_P2_IM.txt", memory);
     end
 
     assign Instruction = memory[Address[31:2]];

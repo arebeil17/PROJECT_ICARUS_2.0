@@ -11,7 +11,7 @@
 module EX_STAGE(
     Clock, Reset, 
     // Control Input(s)
-    ALUSrc, RegDestMuxControl, ALUOp, /*EXMEM_RegDest, MEMWB_RegDest, EXMEM_WriteEnable, MEMWB_WriteEnable, */RegWrite_In, FWMuxAControl, FWMuxBControl,
+    ALUSrc, RegDestMuxControl, ALUOp, RegWrite_In, FWMuxAControl, FWMuxBControl,
     // Data Input(s)
     PC, Instruction, RF_RD1, RF_RD2, SE_In, FWFromMEM, FWFromWB, MEM_ReadData,
     // Control Output(s)

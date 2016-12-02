@@ -44,30 +44,25 @@ NextRow:	add		$t9, $t9, $s5		# 168 Move to Next Row End
 			addi 	$t4, $t4, 4			# 172 Goto Next Window Element	
 			add		$t3, $t3, $t7		# 176 Frame Jump
 			j		WindowLoop			# 180 (fixed)
-returnUpdate:	
-			addi    $t0, $0, 0			# 184
+returnUpdate:addi    $t0, $0, 0			# 184
 			sub     $t1, $t6, $a1       # 188 Compute Frame offset from starting address
 			srl     $t1, $t1, 2         # 192 convert address offset to integer index
-IndexLoop:								# Determines the index of the current row
-			slt     $t8, $t1, $s1		# 196 if(t0 < 0) t2 = 1 else if(t0 >= 0) t2 = 0
+IndexLoop:	slt     $t8, $t1, $s1		# 196 if(t0 < 0) t2 = 1 else if(t0 >= 0) t2 = 0
 			bne		$t8, $0, CheckSAD 	# 200 conitnue loop until t0 <= 0, t2 = 0
 			sub     $t1, $t1, $s1       # 204 division by subraction
 			addi	$t0, $t0, 1			# 208
 			j 		IndexLoop			# 212 (fixed)
-CheckSAD:
-			slt 	$t8, $s7,$t5		# 216 Check if current SAD is less than existing
+CheckSAD:	slt 	$t8, $s7,$t5		# 216 Check if current SAD is less than existing
 			bne 	$t8, $0, CheckExit 	# 220
         	addi    $s7, $t5, 0         # 224 update SAD with new comparison value
 			addi	$v0, $t0, 0			# 228
 			addi	$v1, $t1, 0			# 232
-CheckExit:	
-			sub		$t2, $s1,$s3		# 236 Calc Greatest Possible Column
+CheckExit:	sub		$t2, $s1,$s3		# 236 Calc Greatest Possible Column
 			sub		$t3, $s0,$s2		# 240 Calc Greatest Possible Row
 			bne		$t0, $t3, NextWindow# 244
 			bne     $t1, $t2, NextWindow# 248
 			j 		End					# 252
-NextWindow:
-			bne		$s6, $0,lastDown	# 256 If Last Move was not init (0000), try Down
+NextWindow:	bne		$s6, $0,lastDown	# 256 If Last Move was not init (0000), try Down
 			beq		$s6, $0,MoveRight	# 260 End If No Move Right Possible - FIX FOR POSSIBLE MOVE DOWN
 			j		End					# 264 else End
 lastDown:	andi	$t8, $s6,1			# 268 Test Value for Last Move Down (0001)
@@ -82,32 +77,30 @@ lastRight:	andi	$t8, $s6,2			# 288 Test Value for last Move Right (0010)
 			j		MoveRight			# 304
 lastUR:		andi	$t8, $s6,4			# 308 Test Value for Last Move Up & Right (0100)
 			beq		$t8, $0,lastDL		# 312 If Last Move was Not Up & Right, Try Down & Left
-			beq		$t1, $t2,MoveDown	# If We are In the Last column, Move Down
-			beq		$t0, $0,MoveRight	# If We are In the top Row, Move Right
-			j		MoveUR				# Otherwise Move Up & Right
-lastDL:		andi	$t8, $s6,8			# Test Value for Last Move Down & Left (1000)
-			beq		$t8, $0, End		# WE SHOULD *NEVER* BRANCH HERE, BUT...
-			beq		$t0, $t3,MoveRight	# If we are in the Bottom Row, Move Right
-			beq		$t1, $0,MoveDown		# If we are in the Left Most Column, Move Down
-			j		MoveDL				# Otherwise Move Down & Left
-			
-# STARTING HERE WE CAN REUSED ALL $t*, BEFORE j'ing YOU MUST
-# SET $t5 to the last move (1, 2, 4 or 8), and $t0 & $t1 to zero 
-MoveDown:	sll		$t0, $s1,2
-			add		$t6, $t6, $t0		# Move Current Frame Forward the Width of One Frame
-			li      $s6, 1              # Save last move as move down
-			j		SAD_Routine			
-MoveRight:	addi	$t6, $t6, 4			# Move Current Frame Forward One Block
-			li		$s6, 2				# Set Last Move Right (0...0010)
-			j		SAD_Routine
-MoveUR:		sll		$t0, $s1,2
-			sub		$t6, $t6,$t0			# Move Current Frame Back the Width of One Frame
-			addi	$t6, $t6,4			# Move Current Frame Forward One Block
-			li		$s6, 4				# Set Last Move Up & Right (0...0100)
-			j		SAD_Routine
-MoveDL:		sll		$t0,$s1,2
-			add		$t6, $t6,$t0			# Move Current Frame Forward the Width of One Frame
-			addi	$t6, $t6,-4			# Move Current Frame Back One Block
-			li		$s6, 8				# Set Last Move Down & Left (0...01000)
-			j		SAD_Routine
-End:		jr      $ra
+			beq		$t1, $t2,MoveDown	# 316 If We are In the Last column, Move Down
+			beq		$t0, $0,MoveRight	# 320 If We are In the top Row, Move Right
+			j		MoveUR				# 324 Otherwise Move Up & Right
+lastDL:		andi	$t8, $s6,8			# 328 Test Value for Last Move Down & Left (1000)
+			beq		$t8, $0, End		# 332 WE SHOULD *NEVER* BRANCH HERE, BUT...
+			beq		$t0, $t3,MoveRight	# 336 If we are in the Bottom Row, Move Right
+			beq		$t1, $0,MoveDown	# 340 If we are in the Left Most Column, Move Down
+			j		MoveDL				# 344 Otherwise Move Down & Left
+MoveDown:	sll		$t0, $s1,2			# 348
+			add		$t6, $t6, $t0		# 352 Move Current Frame Forward the Width of One Frame
+			li      $s6, 1              # 356 Save last move as move down
+			j		SAD_Routine			# 360
+MoveRight:	addi	$t6, $t6, 4			# 364 Move Current Frame Forward One Block
+			li		$s6, 2				# 368 Set Last Move Right (0...0010)
+			j		SAD_Routine			# 372
+MoveUR:		sll		$t0, $s1,2			# 376
+			sub		$t6, $t6,$t0		# 380 Move Current Frame Back the Width of One Frame
+			addi	$t6, $t6,4			# 384 Move Current Frame Forward One Block
+			li		$s6, 4				# 388 Set Last Move Up & Right (0...0100)
+			j		SAD_Routine			# 392
+MoveDL:		sll		$t0,$s1,2			# 396
+			add		$t6, $t6,$t0		# 400 Move Current Frame Forward the Width of One Frame
+			addi	$t6, $t6,-4			# 404 Move Current Frame Back One Block
+			li		$s6, 8				# 408 Set Last Move Down & Left (0...01000)
+			j		SAD_Routine			# 412
+End:		j		endLoop				# 416
+endLoop:	j		End					# 420

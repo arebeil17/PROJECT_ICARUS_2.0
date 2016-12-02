@@ -31,7 +31,7 @@
 // for example,  to declare an array of 256 32-bit elements, declaration is: reg[31:0] memory[0:255]
 // if i continue with the same declaration, we need 8 bits to index to one of 256 elements. 
 // however , address port for the data memory is 32 bits. from those 32 bits, least significant 2 
-// bits help us index to one of the 4 bytes within a single word. therefore we only need bits [9-2] 
+// bits help us index to one of the 4 bytes within a single word. therefore we only need bits [31-2] 
 // of the "Address" input to index any of the 256 words. 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -46,7 +46,7 @@ module DataMemory(Address, WriteData, ByteSel, Clock, MemWrite, MemRead, ReadDat
     
     output reg [31:0] ReadData; // Contents of memory location at Address
 
-    reg [31:0] memory [0:5120]; // 256x32 Registers
+    reg [31:0] memory [0:5128]; // 256x32 Registers
     integer i = 0;
     
     //initialize data memory
@@ -85,27 +85,27 @@ module DataMemory(Address, WriteData, ByteSel, Clock, MemWrite, MemRead, ReadDat
         if(MemWrite == 1) begin
             if(ByteSel == 'b00) begin // For LW
                 if(Address[1:0] == 'b00) //These byte indexing bits must be 00 for sw
-                    memory[Address[9:2]] <= WriteData;
+                    memory[Address[31:2]] <= WriteData;
                     
             end else if(ByteSel == 'b01) begin  // For SB
                 if(Address[1:0] == 'b00) //Index byte 0
-                    memory[Address[9:2]][7:0] <= WriteData;
+                    memory[Address[31:2]][7:0] <= WriteData;
                     
                 else if(Address[1:0] == 'b01) //Index byte 1
-                    memory[Address[9:2]][15:8] <= WriteData;
+                    memory[Address[31:2]][15:8] <= WriteData;
                     
                 else if(Address[1:0] == 'b10) //Index byte 2
-                    memory[Address[9:2]][23:16] <= WriteData;
+                    memory[Address[31:2]][23:16] <= WriteData;
                     
                 else if(Address[1:0] == 'b11) //Index byte 3
-                    memory[Address[9:2]][31:24] <= WriteData;
+                    memory[Address[31:2]][31:24] <= WriteData;
                     
             end else if(ByteSel == 'b11) begin //for store half word
                 if(Address[1:0] == 'b00)      //Index word 1
-                    memory[Address[9:2]][15:0] <= WriteData;
+                    memory[Address[31:2]][15:0] <= WriteData;
                     
                 else if(Address[1:0] == 'b10) // Index word 2
-                    memory[Address[9:2]][31:16] <= WriteData; 
+                    memory[Address[31:2]][31:16] <= WriteData; 
             end
         end
     end
@@ -114,26 +114,26 @@ module DataMemory(Address, WriteData, ByteSel, Clock, MemWrite, MemRead, ReadDat
         if(MemRead == 1) begin
             if(ByteSel == 'b00) begin
                 if(Address[1:0] == 'b00) //These byte indexing bits must be 00 for lw
-                    ReadData <= memory[Address[9:2]];
+                    ReadData <= memory[Address[31:2]];
                     
             end else if(ByteSel == 'b01) begin //for lb
                 if(Address[1:0] == 'b00) //Index byte 0
-                    ReadData <= {{24{memory[Address[9:2]][7]}}, memory[Address[9:2]][7:0]};
+                    ReadData <= {{24{memory[Address[31:2]][7]}}, memory[Address[31:2]][7:0]};
                 else if(Address[1:0] == 'b01) //Index byte 1
-                    ReadData <= {{24{memory[Address[9:2]][15]}}, memory[Address[9:2]][15:8]};
+                    ReadData <= {{24{memory[Address[31:2]][15]}}, memory[Address[31:2]][15:8]};
                     
                 else if(Address[1:0] == 'b10) //Index byte 2
-                    ReadData <= {{24{memory[Address[9:2]][15]}}, memory[Address[9:2]][23:16]};
+                    ReadData <= {{24{memory[Address[31:2]][15]}}, memory[Address[31:2]][23:16]};
                     
                 else if(Address[1:0] == 'b11) //Index byte 3
-                    ReadData <= {{24{memory[Address[9:2]][15]}}, memory[Address[9:2]][31:24]};
+                    ReadData <= {{24{memory[Address[31:2]][15]}}, memory[Address[31:2]][31:24]};
                     
             end else if(ByteSel == 'b11) begin //for load half-word
                 if(Address[1:0] == 'b00)      //Index word 1
-                    ReadData <= {{16{memory[Address[9:2]][15]}}, memory[Address[9:2]][15:0]};
+                    ReadData <= {{16{memory[Address[31:2]][15]}}, memory[Address[31:2]][15:0]};
                     
                 else if(Address[1:0] == 'b10) // Index word 2
-                    ReadData <= {{16{memory[Address[9:2]][15]}}, memory[Address[9:2]][31:16]}; 
+                    ReadData <= {{16{memory[Address[31:2]][15]}}, memory[Address[31:2]][31:16]}; 
             end
         end else begin
             ReadData <= 32'd0;

@@ -18,7 +18,7 @@ module DatapathController(
     output reg [2:0] BCControl;
     output reg [4:0] AluOp;
                             
-    localparam [5:0] INITIAL = 'b111111,    // INITIAL
+    localparam [5:0]  INITIAL = 'b111111,    // INITIAL
                     OP_000000 = 'b000000,   // Most R-type Instructions, JR
                     OP_000001 = 'b000001,   // BGEZ, BLTZ
                     OP_000010 = 'b000010,   // J
@@ -167,10 +167,10 @@ module DatapathController(
                 Jump <= 0; JumpMux <= 0; ByteSel <= 2'b00;
                 BCControl <= 'b000; BranchSourceMux <= 0; JAL <= 0;
             end
-            OP_001111: begin // LUI - Not Tested
+            OP_001111: begin // LUI
                 RegDest <= 2'b01; RegWrite <= 1; AluSrc <= 1;
                 MemWrite <= 0; MemRead <= 0; Branch <= 0;
-                MemToReg <= 2'b00; SignExt <= 1; AluOp <= 'b01010;
+                MemToReg <= 2'b00; SignExt <= 1; AluOp <= 'b10011;
                 Jump <= 0; JumpMux <=0; ByteSel <= 2'b00;
                 BCControl <= 'b000; BranchSourceMux <= 0; JAL <= 0;
             end

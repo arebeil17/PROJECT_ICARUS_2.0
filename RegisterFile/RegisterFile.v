@@ -65,7 +65,7 @@ module RegisterFile(
     
     output reg [31:0] ReadData1, ReadData2;
     (* mark_debug = "true"*) output [31:0] V0, V1;
-    (* mark_debug = "true"*) reg [31:0] S1, S2, S3, S4;
+    (* mark_debug = "true"*) reg [31:0] S1, S2, S3, S4, S7;
     
     reg [31:0] registers [0:31];
     
@@ -155,6 +155,7 @@ module RegisterFile(
         S2 <= registers[18];
         S3 <= registers[19];
         S4 <= registers[20];
+        S7 <= registers[23];
     end
     
     assign V0 = registers[2];

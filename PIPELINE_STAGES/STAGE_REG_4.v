@@ -39,7 +39,8 @@ module MEMWB_Reg(
     output reg RegWrite_Out;
     output reg [1:0] MemToReg_Out;
     output reg [4:0] RegDest_Out;
-    output reg [31:0] ALUResult_Out, PC_Out, ReadData_Out;
+    output reg [31:0] ALUResult_Out, ReadData_Out;
+    (* mark_debus = "true"*) output reg [31:0] PC_Out;
     
     initial begin
         ALUResult_Out <= 32'b0;
